@@ -9,6 +9,19 @@
 import UIKit
 
 class ViewController: UIViewController, YDMenuDataSource {
+    
+    
+//    var data = [
+//
+//    [
+//
+//
+//        ],
+//    [
+//        ],
+//    [
+//        ]
+//    ]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +56,7 @@ class ViewController: UIViewController, YDMenuDataSource {
     }
     
     func menu(_ menu: YDMenu, numberOfItemsInRow row: Int, inColumn column: Int) -> Int {
-        return 1
+        return 7
     }
     
     func menu(_ menu: YDMenu, titleForItemsInRowAtIndexPath indexPath: YDMenu.Index) -> String {

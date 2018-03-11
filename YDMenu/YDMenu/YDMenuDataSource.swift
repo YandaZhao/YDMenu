@@ -38,7 +38,7 @@ protocol YDMenuDataSource: class {
     func menu(_ menu: YDMenu, titleForItemsInRowAtIndexPath indexPath: YDMenu.Index) -> String
 
     /// 二级菜单的image
-    func menu(_ menu: YDMenu, imageForItemsInRowAtIndexPath: YDMenu.Index) -> String?
+    func menu(_ menu: YDMenu, imageNameForItemsInRowAtIndexPath: YDMenu.Index) -> String?
 
     /// 二级菜单的detail text
     func menu(_ menu: YDMenu, detailTextForItemsInRowAtIndexPath indexPath: YDMenu.Index) -> String?
@@ -76,7 +76,7 @@ extension YDMenuDataSource {
     }
     
     /// 二级菜单的image
-    func menu(_ menu: YDMenu, imageForItemsInRowAtIndexPath: YDMenu.Index) -> String? {
+    func menu(_ menu: YDMenu, imageNameForItemsInRowAtIndexPath: YDMenu.Index) -> String? {
         return nil
     }
     
