@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>sift</key>
+	<array>
+		<string>折扣商品</string>
+		<string>今年爆款</string>
+		<string>下单有礼</string>
+	</array>
+	<key>Order</key>
+	<array>
+		<string>人气优先</string>
+		<string>价格优先</string>
+		<string>品质优先</string>
+		<string>评价优先</string>
+	</array>
+	<key>Area</key>
+	<array>
+		<dict>
+			<key>distance</key>
+			<array>
+				<string>最新潮</string>
+				<string>最热闹</string>
+				<string>喜欢安静</string>
+				<string>不醉不归</string>
+				<string>我是麦霸</string>
+			</array>
+			<key>name</key>
+			<string>推荐地区</string>
+		</dict>
+		<dict>
+			<key>distance</key>
+			<array>
+				<string>附近</string>
+				<string>1 Km</string>
+				<string>2 Km</string>
+				<string>3 Km</string>
+				<string>5 Km</string>
+				<string>10 Km</string>
+				<string>全部</string>
+			</array>
+			<key>name</key>
+			<string>昌平区</string>
+		</dict>
+		<dict>
+			<key>distance</key>
+			<array>
+				<string>附近</string>
+				<string>1 Km</string>
+				<string>2 Km</string>
+				<string>3 Km</string>
+				<string>5 Km</string>
+				<string>10 Km</string>
+				<string>全部</string>
+			</array>
+			<key>name</key>
+			<string>大兴区</string>
+		</dict>
+		<dict>
+			<key>distance</key>
+			<array>
+				<string>附近</string>
+				<string>1 Km</string>
+				<string>2 Km</string>
+				<string>3 Km</string>
+				<string>5 Km</string>
+				<string>10 Km</string>
+				<string>全部</string>
+			</array>
+			<key>name</key>
+			<string>丰台区</string>
+		</dict>
+		<dict>
+			<key>distance</key>
+			<array>
+				<string>附近</string>
+				<string>1 Km</string>
+				<string>2 Km</string>
+				<string>3 Km</string>
+				<string>5 Km</string>
+				<string>10 Km</string>
+				<string>全部</string>
+			</array>
+			<key>name</key>
+			<string>海淀区</string>
+		</dict>
+		<dict>
+			<key>distance</key>
+			<array>
+				<string>附近</string>
+				<string>1 Km</string>
+				<string>2 Km</string>
+				<string>3 Km</string>
+				<string>5 Km</string>
+				<string>10 Km</string>
+				<string>全部</string>
+			</array>
+			<key>name</key>
+			<string>朝阳区</string>
+		</dict>
+		<dict>
+			<key>distance</key>
+			<array>
+				<string>附近</string>
+				<string>1 Km</string>
+				<string>2 Km</string>
+				<string>3 Km</string>
+				<string>5 Km</string>
+				<string>10 Km</string>
+				<string>全部</string>
+			</array>
+			<key>name</key>
+			<string>西城区</string>
+		</dict>
+		<dict>
+			<key>distance</key>
+			<array>
+				<string>附近</string>
+				<string>1 Km</string>
+				<string>2 Km</string>
+				<string>3 Km</string>
+				<string>5 Km</string>
+				<string>10 Km</string>
+				<string>全部</string>
+			</array>
+			<key>name</key>
+			<string>东城区</string>
+		</dict>
+	</array>
+</dict>
+</plist>

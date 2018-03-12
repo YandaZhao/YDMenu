@@ -54,7 +54,7 @@ extension YDMenuDataSource {
     
     // MARK: - 一级菜单
     /// 第column列，每行的image
-    func menu(_ menu: YDMenu, imageNameForRowAtIndexPath: YDMenu.Index) -> String? {
+    func menu(_ menu: YDMenu, imageNameForRowAtIndexPath indexPath: YDMenu.Index) -> String? {
         return nil
     }
     

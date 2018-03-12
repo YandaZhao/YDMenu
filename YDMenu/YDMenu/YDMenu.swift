@@ -25,6 +25,10 @@ class YDMenu: UIView {
         var row: Int
         /// 行的子行
         var item: Int
+        /// 是否有item
+        var haveItem:Bool {
+            return item != -1
+        }
         
         init(column: Int, row: Int, item: Int = -1) {
             self.column = column
@@ -47,7 +51,7 @@ class YDMenu: UIView {
     }
     var textColor: UIColor = UIColor(red: 51/255.0, green: 51/255.0, blue: 51/255.0, alpha: 1)
     var selectedTextColor: UIColor = UIColor(red: 246/255.0, green: 79/255.0, blue: 0/255.0, alpha: 1)
-    var detailTextColor: UIColor = UIColor(red: 246/255.0, green: 79/255.0, blue: 0/255.0, alpha: 1)
+    var detailTextColor: UIColor = UIColor(red: 51/255.0, green: 51/255.0, blue: 51/255.0, alpha: 1)
     var indicatorColor = UIColor(red: 51/255.0, green: 51/255.0, blue: 51/255.0, alpha: 1)
     var detailTextFontSize: CGFloat = 11
     var separatorColor = UIColor(red: 219/255.0, green: 219/255.0, blue: 219/255.0, alpha: 1)
@@ -79,7 +83,10 @@ class YDMenu: UIView {
         let view = UITableView(frame: CGRect(x: menuOrigin.x, y: menuOrigin.y + menuHeight, width: kScreenWidth / 2, height: 0))
         view.dataSource = self;
         view.delegate = self;
-        view.rowHeight = tableViewHeight
+        view.rowHeight = cellHeight
+//        view.backgroundColor = UIColor(white: 0.95, alpha: 1)
+//        view.tableFooterView = UIView()
+        view.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         view.separatorColor = separatorColor
         return view
     }()
@@ -88,8 +95,10 @@ class YDMenu: UIView {
         let view = UITableView(frame: CGRect(x: menuOrigin.x + kScreenWidth / 2, y: menuOrigin.y + menuHeight, width: kScreenWidth / 2, height: 0))
         view.dataSource = self;
         view.delegate = self;
-        view.rowHeight = tableViewHeight
+        view.rowHeight = cellHeight
+//        view.tableFooterView = UIView()
         view.separatorColor = separatorColor
+        view.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         return view
     }()
     
@@ -114,6 +123,8 @@ class YDMenu: UIView {
         let menuTap = UITapGestureRecognizer(target: self, action: #selector(menuTapped))
         self.addGestureRecognizer(menuTap)
         
+        leftTableView.tableFooterView = UIView()
+        rightTableView.tableFooterView = UIView()
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -210,7 +221,7 @@ class YDMenu: UIView {
             if let itemsCount = dataSource?.menu(self, numberOfItemsInRow: 0, inColumn: i), itemsCount > 0 {
                 titleStr = dataSource?.menu(self, titleForItemsInRowAtIndexPath: Index(column: i, row: 0, item: 0))
             }else{
-                titleStr = dataSource?.menu(self, titleForRowAtIndexPath: YDMenu.Index(column: i, row: 0))
+                titleStr = dataSource?.menu(self, titleForRowAtIndexPath: Index(column: i, row: 0))
             }
             let titleLayerPosition = CGPoint(x: (index + 0.5) * backgroundLayerWidth, y: menuHeight * 0.5)
             let titleLayer = creatTitleLayer(text: titleStr, position: titleLayerPosition, textColor: textColor)
@@ -240,6 +251,61 @@ class YDMenu: UIView {
         return CGSize(width: ceil(size.width) + 2, height: size.height)
     }
     
+    func selectedAtIndex(_ indexPath: Index) {
+        
+        guard let ds = dataSource else {
+            return
+        }
+        // 判断传入Index是否合法
+        guard indexPath.column >= 0 && indexPath.row >= 0 && indexPath.column < ds.numberOfColumnsInMenu(self) && indexPath.row < ds.menu(self, numberOfRowsInColumn: indexPath.column) else {
+            return
+        }
+        
+        if indexPath.haveItem {
+            guard indexPath.item < ds.menu(self, numberOfItemsInRow: indexPath.row, inColumn: indexPath.column)  && indexPath.item >= 0 else {
+                return
+            }
+        }
+        
+        
+        // 选择
+        let titleLayer = currentTitleLayers[indexPath.column]
+        currentSelectedColumn = indexPath.column
+        currentSelectedRows[indexPath.column] = indexPath.row
+        if indexPath.haveItem {
+            titleLayer.string = ds.menu(self, titleForItemsInRowAtIndexPath: indexPath)
+            animateFor(titleLayer: titleLayer, indicator: currentIndicatorLayers[currentSelectedColumn], show: isShow, complete: {
+                
+            })
+        }else {
+            titleLayer.string = ds.menu(self, titleForRowAtIndexPath: indexPath)
+            animateFor(titleLayer: titleLayer, indicator: currentIndicatorLayers[currentSelectedColumn], show: isShow, complete: {
+                
+            })
+        }
+        
+        delegate?.menu(self, didSelectRowAtIndexPath: indexPath)
+    }
+    /// 默认选中
+    func selectDeafult() {
+        
+        guard let ds = dataSource else {
+            return
+        }
+        
+        for i in 0 ..< ds.numberOfColumnsInMenu(self) {
+            
+            if ds.menu(self, numberOfItemsInRow: 0, inColumn: i) > 0 {
+                // 有二级列表
+                selectedAtIndex(Index(column: i, row: 0, item: 0))
+            }else {
+                // 无二级列表
+                selectedAtIndex(Index(column: i, row: 0))
+            }
+        }
+        
+    }
+
 }
 
 // MARK: - UITableViewDataSource / Delegate
@@ -272,7 +338,9 @@ extension YDMenu: UITableViewDataSource, UITableViewDelegate {
             cell.textLabel?.highlightedTextColor = selectedTextColor
             cell.textLabel?.font = UIFont.systemFont(ofSize: fontSize)
             cell.detailTextLabel?.textColor = detailTextColor
+            cell.detailTextLabel?.highlightedTextColor = selectedTextColor
             cell.detailTextLabel?.font = UIFont.systemFont(ofSize: detailTextFontSize)
+            cell.imageView?.contentMode = .scaleAspectFit
         }
         
         if tableView == leftTableView {
@@ -280,10 +348,11 @@ extension YDMenu: UITableViewDataSource, UITableViewDelegate {
             if let ds = dataSource {
                 
                 cell.textLabel?.text = ds.menu(self, titleForRowAtIndexPath: Index(column: currentSelectedColumn, row: indexPath.row))
-                cell.detailTextLabel?.text = ds.menu(self, detailTextForRowAtIndexPath: YDMenu.Index(column: currentSelectedColumn, row: indexPath.row))
+                cell.detailTextLabel?.text = ds.menu(self, detailTextForRowAtIndexPath: Index(column: currentSelectedColumn, row: indexPath.row))
                 // image
                 switch ds.menu(self, imageNameForRowAtIndexPath: Index(column: currentSelectedColumn, row: indexPath.row)) {
                 case .some(let imageName):
+                    
                     cell.imageView?.image = UIImage(named: imageName)
                     break
                 case .none:
@@ -303,6 +372,8 @@ extension YDMenu: UITableViewDataSource, UITableViewDelegate {
                 }else {
                     cell.accessoryType = .none
                 }
+                cell.backgroundColor = UIColor(white: 0.99, alpha: 1)
+                
             }
         }else {
             // 二级列表
@@ -321,19 +392,58 @@ extension YDMenu: UITableViewDataSource, UITableViewDelegate {
                     cell.imageView?.image = nil
                 }
                 
-//                // 选中上次选择的行
-//                if cell.textLabel?.text == currentTitleLayers[currentSelectedColumn].string as! String? {
-//                    leftTableView.selectRow(at: IndexPath(row: currentSelectedRows[currentSelectedColumn], section: 0), animated: true, scrollPosition: .middle)
-//                    rightTableView.selectRow(at: indexPath, animated: true, scrollPosition: .middle)
-//                }
+                // 选中上次选择的行
+                if cell.textLabel?.text == currentTitleLayers[currentSelectedColumn].string as! String? {
+                    leftTableView.selectRow(at: IndexPath(row: currentSelectedRows[currentSelectedColumn], section: 0), animated: true, scrollPosition: .middle)
+                    rightTableView.selectRow(at: indexPath, animated: true, scrollPosition: .middle)
+                }
                 
                 cell.accessoryType = .none
             }
             
         }
-        return UITableViewCell()
+        return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        guard let ds = dataSource else { return }
+        
+        let titleLayer = currentTitleLayers[currentSelectedColumn]
+        
+        if tableView == leftTableView {
+            // 一级列表
+            
+            currentSelectedRows[currentSelectedColumn] = indexPath.row
+            
+            let haveItems = ds.menu(self, numberOfItemsInRow: indexPath.row, inColumn: currentSelectedColumn) > 0
+            titleLayer.string = ds.menu(self, titleForRowAtIndexPath: Index(column: currentSelectedColumn, row: indexPath.row))
+            animateFor(titleLayer: titleLayer, indicator: currentIndicatorLayers[currentSelectedColumn], show: true, complete: {})
+            
+            if haveItems {
+                rightTableView.reloadData()
+            }else {
+                // 收回列表
+                animateFor(indicator: currentIndicatorLayers[currentSelectedColumn], title: titleLayer, show: false, complete: {
+                    isShow = false
+                })
+            }
+            
+            delegate?.menu(self, didSelectRowAtIndexPath: Index(column: currentSelectedColumn, row: indexPath.row))
+            
+        }else {
+            // 二级列表
+            
+            titleLayer.string = ds.menu(self, titleForItemsInRowAtIndexPath: Index(column: currentSelectedColumn, row: currentSelectedRows[currentSelectedColumn], item: indexPath.row))
+            // 收回列表
+            animateFor(indicator: currentIndicatorLayers[currentSelectedColumn], title: titleLayer, show: false, complete: {
+                isShow = false
+            })
+            
+            delegate?.menu(self, didSelectRowAtIndexPath: Index(column: currentSelectedColumn, row: currentSelectedRows[currentSelectedColumn], item: indexPath.row))
+        }
+        
+    }
 }
 
 // MARK: - ActionEvent
@@ -341,13 +451,14 @@ extension YDMenu {
     
     @objc private func backTapped(sender: UITapGestureRecognizer) -> Void {
         
+        animateFor(indicator: currentIndicatorLayers[currentSelectedColumn], title: currentTitleLayers[currentSelectedColumn], show: false) {
+            isShow = false
+        }
     }
     
     @objc private func menuTapped(sender: UITapGestureRecognizer) -> Void {
         
-        guard let ds = dataSource else {
-            return
-        }
+        guard let ds = dataSource else { return }
         
         // 确定点击的index
         let tapPoint = sender .location(in: self)
@@ -417,16 +528,27 @@ extension YDMenu {
     func animateFor(indicator: CAShapeLayer, reverse: Bool, complete: () -> Void) -> Void {
         
         // 旋转动画
-        let animation = CAKeyframeAnimation(keyPath: "transform.rotation")
-        animation.values = reverse ? [0, Double.pi] : [Double.pi, 0]
-        animation.duration = kAnimationDuration
-        indicator.add(animation, forKey: animation.keyPath)
         
-        if animation.isRemovedOnCompletion {
-            indicator.setValue(animation.values?.last, forKey: animation.keyPath!)
+//        CATransaction.begin()
+//        CATransaction.setAnimationDuration(kAnimationDuration)
+//        CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(controlPoints: 0.4, 0.0, 0.2, 1.0))
+//        let animation = CAKeyframeAnimation(keyPath: "transform.rotation")
+//        animation.values = reverse ? [CGFloat(0), CGFloat.pi] : [CGFloat.pi, CGFloat(0)]
+//        animation.duration = kAnimationDuration
+//        indicator.add(animation, forKey: animation.keyPath)
+        
+//        if animation.isRemovedOnCompletion {
+        if reverse {
+            indicator.transform = CATransform3DMakeRotation(CGFloat.pi, 0, 0, 1)
+        }else {
+            indicator.transform = CATransform3DIdentity
         }
         
         
+//            indicator.setValue(animation.values?.last, forKey: animation.keyPath!)
+//        }
+        
+//        CATransaction.commit()
         
         /// indicator 颜色
         if reverse {
@@ -489,7 +611,7 @@ extension YDMenu {
                 superview?.addSubview(leftTableView)
                 superview?.addSubview(rightTableView)
             }else {
-                
+                rightTableView.removeFromSuperview()
                 leftTableView.frame = CGRect(x: 0, y: menuOrigin.y + menuHeight, width: kScreenWidth, height: 0)
                 superview?.addSubview(leftTableView)
             }

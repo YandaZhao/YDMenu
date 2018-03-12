@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E29173E720562CCF00210FAE /* MenuData.plist in Resources */ = {isa = PBXBuildFile; fileRef = E29173E620562CCF00210FAE /* MenuData.plist */; };
 		E2D458642050C9CC00E55CA2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D458632050C9CC00E55CA2 /* AppDelegate.swift */; };
 		E2D458662050C9CC00E55CA2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D458652050C9CC00E55CA2 /* ViewController.swift */; };
 		E2D458692050C9CC00E55CA2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2D458672050C9CC00E55CA2 /* Main.storyboard */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E29173E620562CCF00210FAE /* MenuData.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = MenuData.plist; sourceTree = "<group>"; };
 		E2D458602050C9CC00E55CA2 /* YDMenu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YDMenu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2D458632050C9CC00E55CA2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E2D458652050C9CC00E55CA2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 				E2D458752050CA5200E55CA2 /* YDMenu */,
 				E2D458632050C9CC00E55CA2 /* AppDelegate.swift */,
 				E2D458652050C9CC00E55CA2 /* ViewController.swift */,
+				E29173E620562CCF00210FAE /* MenuData.plist */,
 				E2D458672050C9CC00E55CA2 /* Main.storyboard */,
 				E2D4586A2050C9CC00E55CA2 /* Assets.xcassets */,
 				E2D4586C2050C9CC00E55CA2 /* LaunchScreen.storyboard */,
@@ -143,6 +146,7 @@
 				E2D4586E2050C9CC00E55CA2 /* LaunchScreen.storyboard in Resources */,
 				E2D4586B2050C9CC00E55CA2 /* Assets.xcassets in Resources */,
 				E2D458692050C9CC00E55CA2 /* Main.storyboard in Resources */,
+				E29173E720562CCF00210FAE /* MenuData.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
