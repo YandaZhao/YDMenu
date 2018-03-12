@@ -104,7 +104,7 @@ class ViewController: UIViewController, YDMenuDataSource, YDMenuDelegate {
     
     func menu(_ menu: YDMenu, imageNameForRowAtIndexPath indexPath: YDMenu.Index) -> String? {
         if indexPath.column == 0 {
-            return "home_4"
+            return (arc4random() % 10).description
         }
         return nil
     }
