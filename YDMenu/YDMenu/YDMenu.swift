@@ -251,6 +251,7 @@ class YDMenu: UIView {
         return CGSize(width: ceil(size.width) + 2, height: size.height)
     }
     
+    /// 使用代码选中列表中的row
     func selectedAtIndex(_ indexPath: Index) {
         
         guard let ds = dataSource else {
@@ -447,7 +448,7 @@ extension YDMenu: UITableViewDataSource, UITableViewDelegate {
 }
 
 // MARK: - ActionEvent
-extension YDMenu {
+private extension YDMenu {
     
     @objc private func backTapped(sender: UITapGestureRecognizer) -> Void {
         
@@ -501,13 +502,10 @@ extension YDMenu {
         
     }
     
-    
-    
-    
 }
 
 // MARK: - Animation
-extension YDMenu {
+private extension YDMenu {
     
     
     func animateFor(indicator: CAShapeLayer, title: CATextLayer, show: Bool, complete: () -> Void) -> Void {
