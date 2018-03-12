@@ -33,7 +33,7 @@ class ViewController: UIViewController, YDMenuDataSource, YDMenuDelegate {
 
     @IBAction func selectedBtnClick(_ sender: Any) {
         
-        menu.selectedAtIndex(YDMenu.Index(column: 0, row: 2, item: 0))
+        menu.selectedAtIndex(YDMenu.Index(column: 1, row: 2))
     }
     
     @IBAction func selectedDefaultBtnClick(_ sender: Any) {
@@ -103,7 +103,7 @@ class ViewController: UIViewController, YDMenuDataSource, YDMenuDelegate {
     }
     
     func menu(_ menu: YDMenu, imageNameForRowAtIndexPath indexPath: YDMenu.Index) -> String? {
-        if indexPath.column == 0 {
+        if indexPath.column == 0 || indexPath.column == 2 {
             return (arc4random() % 10).description
         }
         return nil

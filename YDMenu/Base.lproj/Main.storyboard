@@ -19,15 +19,15 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vWg-A4-1hk">
-                                <rect key="frame" x="172" y="318" width="31" height="30"/>
-                                <state key="normal" title="选择"/>
+                                <rect key="frame" x="126" y="318" width="123" height="30"/>
+                                <state key="normal" title="选择指定的某一行"/>
                                 <connections>
                                     <action selector="selectedBtnClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dEV-MA-ngo"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4j0-nw-aDs">
-                                <rect key="frame" x="132" y="369" width="110" height="30"/>
-                                <state key="normal" title="SelectedDefault"/>
+                                <rect key="frame" x="141" y="369" width="92" height="30"/>
+                                <state key="normal" title="恢复默认选择"/>
                                 <connections>
                                     <action selector="selectedDefaultBtnClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="20k-Hm-rFA"/>
                                 </connections>

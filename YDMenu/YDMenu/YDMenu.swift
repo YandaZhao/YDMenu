@@ -84,7 +84,7 @@ class YDMenu: UIView {
         view.dataSource = self;
         view.delegate = self;
         view.rowHeight = cellHeight
-//        view.backgroundColor = UIColor(white: 0.95, alpha: 1)
+        view.backgroundColor = UIColor(white: 0.99, alpha: 1)
 //        view.tableFooterView = UIView()
         view.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         view.separatorColor = separatorColor
@@ -97,6 +97,7 @@ class YDMenu: UIView {
         view.delegate = self;
         view.rowHeight = cellHeight
 //        view.tableFooterView = UIView()
+        view.backgroundColor = UIColor(white: 0.985, alpha: 1)
         view.separatorColor = separatorColor
         view.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         return view
@@ -242,6 +243,7 @@ class YDMenu: UIView {
                 layer.addSublayer(separatorLayer)
             }
         }
+        bottomLine.isHidden = false
     }
     
     private func calculateStringSize(_ string: String) -> CGSize {
@@ -259,12 +261,19 @@ class YDMenu: UIView {
         }
         // 判断传入Index是否合法
         guard indexPath.column >= 0 && indexPath.row >= 0 && indexPath.column < ds.numberOfColumnsInMenu(self) && indexPath.row < ds.menu(self, numberOfRowsInColumn: indexPath.column) else {
-            return
+            fatalError("传入的indexPath不合法")
         }
         
         if indexPath.haveItem {
             guard indexPath.item < ds.menu(self, numberOfItemsInRow: indexPath.row, inColumn: indexPath.column)  && indexPath.item >= 0 else {
-                return
+                /*
+                 如果不需要选中二级列表或者无二级列表
+                 创建Index时请不要传入item参数, 例如: menu.selectedAtIndex(YDMenu.Index(column: 1, row: 2))
+                 如果一定要传入, 请传入-1, 例如: menu.selectedAtIndex(YDMenu.Index(column: 1, row: 2, item: -1))
+                 上面两种写法等效
+                 不要给item 传 0, 例如: menu.selectedAtIndex(YDMenu.Index(column: 1, row: 2, item: 0)) ❌❌❌ 因为这种写法代表选择第1列中的一级列表中的第二行中的二级列表中的第0行
+                 */
+                fatalError("传入的indexPath不合法")
             }
         }
         
@@ -400,6 +409,7 @@ extension YDMenu: UITableViewDataSource, UITableViewDelegate {
                 }
                 
                 cell.accessoryType = .none
+                cell.backgroundColor = UIColor(white: 0.985, alpha: 1)
             }
             
         }
